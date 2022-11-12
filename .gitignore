@@ -4,3 +4,4 @@
 !*.yaml
 !*.txt
 !.gitignore
+!*weather/**
