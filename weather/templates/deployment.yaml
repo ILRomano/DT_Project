@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-deployment
+  labels:
+    app: weather
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gunicorn 
+  template:
+    metadata:
+      labels:
+        app: gunicorn
+    spec:
+      containers:
+      - name: gunicorn
+        image: romanoo/gunicorn_img
+        ports:
+        - containerPort: 5000
