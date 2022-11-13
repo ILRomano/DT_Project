@@ -1,6 +1,6 @@
 apiVersion: v2
 name: weather
-description: A Helm chart for Kubernetes
+description: An application chart for weather project
 
 # A chart can be either an 'application' or a 'library' chart.
 #

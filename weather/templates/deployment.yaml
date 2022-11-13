@@ -14,8 +14,16 @@ spec:
       labels:
         app: gunicorn
     spec:
+      volumes:
+        - name: app-pv-storage
+          persistentVolumeClaim:
+            claimName: nfs-pvc
       containers:
-      - name: gunicorn
-        image: romanoo/gunicorn_img
-        ports:
-        - containerPort: 5000
+        - name: gunicorn
+          image: romanoo/gunicorn_img
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - mountPath: "mnt/mynfs"
+              name: app-pv-storage
+
