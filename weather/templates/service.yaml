@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: weather-service
+  name: {{ include "weather.fullname" . }}
+  labels:
+    {{- include "weather.labels" . | nindent 4 }}
 spec:
-  type: NodePort
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
-    app: gunicorn
-  ports:      
-    - port: 5000 
-      targetPort: 5000
-      nodePort: 30000
+    {{- include "weather.selectorLabels" . | nindent 4 }}

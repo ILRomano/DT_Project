@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-pvc
+  name: {{ .Values.volume.claimName }}
 spec:
   storageClassName: nfs
   accessModes:
