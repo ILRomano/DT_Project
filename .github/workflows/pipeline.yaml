@@ -1,0 +1,10 @@
+# Pipeline for cluster configuration
+
+name: IaC CI
+
+# trigger when push to dev branch happens
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
