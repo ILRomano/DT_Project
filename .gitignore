@@ -1,7 +1,5 @@
 #ignore files
-*
+token
+weather/.helmignore
 #dont ignore
-!*.yaml
-!*.txt
-!.gitignore
-!*weather/**
+

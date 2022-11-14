@@ -1,0 +1,52 @@
+# short explanation on how to configure argocd with github repo
+# date 13.11.22 
+# 
+#
+# go to your cluster's machine, install argo
+
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
+
+# install argo cli
+
+sudo curl --silent --location -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v2.4.7/argocd-linux-amd64
+sudo chmod +x /usr/local/bin/argocd
+
+# choose service to expose the argo api server, in this example i used port-forwarding
+
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+# the api server is now accesible via ui at localhost:8080
+# the default username is admin 
+# to retrieve the password execute this command
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+# you can login on the browser or cli with the following command
+# now simply type the username and password and you're in
+
+argocd login localhost:8080
+
+# now comes the fun part
+# its very easy to do on the ui but ill explain how its done using the cli
+# configure kubectl to minikube cluster with argocd namespace
+
+kubectl config set-context --current --namespace=argocd
+
+# create the app from github repository
+
+argocd app create weather --repo https://github.com/ILRomano/DT_Project_IaC --path weather --dest-server https://kubernetes.default.svc --dest-namespace default
+
+# you now have an app ready to be deployed, it will be out of sync
+# as it has not deployed yet and no resources were allocated
+# you can see this with
+
+argocd app get weather
+
+# to sync the app (fetch resources and kubectl apply them) use
+
+argocd app sync weather
+
+# app should now be running and healthy
+# checkout the Gui on localhost:8080 its awesome
+# don't forget to update if something changes!
